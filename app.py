@@ -8,10 +8,13 @@ app.secret_key = "vvitu_fm_2026"
 USERS_FILE = 'users.json'
 
 # Load college data
-with open('college_data.json', 'r', encoding='utf-8') as f:
-    college_data = json.load(f)
+try:
+    with open('college_data.json', 'r', encoding='utf-8') as f:
+        college_data = json.load(f)
+except Exception:
+    college_data = {}
 
-# Import improved chatbot
+# Import chatbot
 from chatbot import get_response
 
 def save_user(name, phone):
@@ -22,14 +25,17 @@ def save_user(name, phone):
     with open(USERS_FILE, 'r', encoding='utf-8') as f:
         users = json.load(f)
     
+    # Avoid duplicate phone
     for u in users:
         if u.get('phone') == phone:
             return
+    
     users.append({"name": name.strip(), "phone": phone.strip()})
     
     with open(USERS_FILE, 'w', encoding='utf-8') as f:
         json.dump(users, f, indent=4)
 
+# ───── ROUTES ─────
 @app.route('/')
 def login():
     if session.get('user'):
@@ -38,18 +44,21 @@ def login():
 
 @app.route('/login', methods=['POST'])
 def do_login():
-    data = request.get_json()
-    name = data.get('name', '').strip()
-    phone = data.get('phone', '').strip()
+    try:
+        data = request.get_json()
+        name = data.get('name', '').strip()
+        phone = data.get('phone', '').strip()
 
-    if len(name) < 2:
-        return jsonify({'success': False, 'message': 'Please enter a valid name'})
-    if len(phone) != 10 or not phone.isdigit():
-        return jsonify({'success': False, 'message': 'Please enter 10-digit mobile number'})
+        if len(name) < 2:
+            return jsonify({'success': False, 'message': 'Please enter a valid name'})
+        if len(phone) != 10 or not phone.isdigit():
+            return jsonify({'success': False, 'message': 'Please enter valid 10-digit phone number'})
 
-    save_user(name, phone)
-    session['user'] = {"name": name, "phone": phone}
-    return jsonify({'success': True})
+        save_user(name, phone)
+        session['user'] = {"name": name, "phone": phone}
+        return jsonify({'success': True})
+    except:
+        return jsonify({'success': False, 'message': 'Server error'})
 
 @app.route('/home')
 def home():
@@ -61,19 +70,22 @@ def home():
 def chat_page():
     if not session.get('user'):
         return redirect(url_for('login'))
-    return render_template('chat.html', user_name=session['user']['name'])
+    return render_template('chat.html', user_name=session.get('user', {}).get('name', 'Student'))
 
 @app.route('/chat', methods=['POST'])
 def chat():
     if not session.get('user'):
         return jsonify({'response': 'Please login first!'})
     
-    msg = request.get_json().get('message', '').strip()
-    if not msg:
-        return jsonify({'response': 'Please type something 😊'})
-    
-    response = get_response(msg, college_data)
-    return jsonify({'response': response})
+    try:
+        msg = request.get_json().get('message', '').strip()
+        if not msg:
+            return jsonify({'response': 'Please type something 😊'})
+        
+        response = get_response(msg, college_data)
+        return jsonify({'response': response})
+    except:
+        return jsonify({'response': "Sorry, I'm having trouble right now. Please try again!"})
 
 @app.route('/logout')
 def logout():
