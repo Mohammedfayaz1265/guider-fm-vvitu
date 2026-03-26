@@ -5,18 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FM Guider - Home</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a0033, #4a0080); color: white; margin:0; padding:0; }
-        .container { max-width: 1100px; margin: 40px auto; text-align: center; }
-        h1 { font-size: 3rem; margin: 20px 0; }
-        .btn { padding: 15px 30px; margin: 15px; background: linear-gradient(90deg, #ff00cc, #9900ff); border: none; border-radius: 50px; color: white; font-size: 1.2rem; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0d0618, #4a0080);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+        h1 { font-size: 3rem; margin-bottom: 20px; }
+        .btn {
+            padding: 15px 30px;
+            margin: 15px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+        }
+        .btn-chat { background: linear-gradient(90deg, #ec4899, #7c3aed); color: white; }
+        .btn-logout { background: #666; color: white; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, {{ user_name }} 👋</h1>
-        <p style="font-size:1.3rem;">Ready to explore VVITU?</p>
-        <a href="/chat"><button class="btn">🚀 Start Chat with FM Guider</button></a>
-        <a href="/logout"><button class="btn" style="background:#666;">Logout</button></a>
-    </div>
+    <h1>Welcome, {{ user_name }} 👋</h1>
+    <p style="font-size: 1.3rem; margin: 20px 0;">Ready to explore VVITU?</p>
+    
+    <a href="/chat"><button class="btn btn-chat">🚀 Start Chat with FM Guider</button></a>
+    <a href="/logout"><button class="btn btn-logout">Logout</button></a>
 </body>
 </html>
