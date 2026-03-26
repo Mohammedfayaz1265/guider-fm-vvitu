@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>FM Guider Login</h2>
+
+{% if step == "email" %}
+<form method="post">
+  <input type="email" name="email" placeholder="Enter Email" required>
+  <button type="submit">Send OTP</button>
+</form>
+{% endif %}
+
+{% if step == "verify" %}
+<form action="/verify" method="post">
+  <input type="hidden" name="email" value="{{email}}">
+  <input type="text" name="otp" placeholder="Enter OTP">
+  <button type="submit">Verify</button>
+</form>
+{% endif %}
+
+</body>
+</html>
