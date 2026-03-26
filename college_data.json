@@ -1,0 +1,173 @@
+{
+  "college_name": "Vasireddy Venkatadri International Technological University",
+  "short_name": "VVITU",
+  "established": "2007",
+  "motto": "Absolute Discipline and Absolute Education",
+  "location": "Nambur, Guntur, Andhra Pradesh - 522 508",
+  "phones": [
+    "83410 98336",
+    "81794 88336",
+    "77029 43336"
+  ],
+  "website": "www.vvitu.ac.in",
+  "eapcet_code": "VVITU / VVITPU",
+  "type": "State Private University",
+  "approvals": "Approved by AICTE, Recognized by UGC",
+  "timings": {
+    "college": "8:00 AM - 3:50 PM",
+    "library": "8:00 AM - 4:00 PM",
+    "canteen": "8:00 AM - 4:30 PM",
+    "office": "9:00 AM - 5:00 PM",
+    "working_days": "Monday to Saturday"
+  },
+  "programs": {
+    "BTech": {
+      "CSE": {
+        "name": "Computer Science Engineering",
+        "fee": 200000
+      },
+      "CSE_AIML": {
+        "name": "CSE (AI & Machine Learning)",
+        "fee": 200000
+      },
+      "CSE_AIDS": {
+        "name": "CSE (AI & Data Science)",
+        "fee": 200000
+      },
+      "CSE_AI": {
+        "name": "CSE (Artificial Intelligence)",
+        "fee": 200000
+      },
+      "CSE_IoT": {
+        "name": "CSE (IoT, Cyber Security incl. Blockchain)",
+        "fee": 200000
+      },
+      "ECE": {
+        "name": "Electronics & Communication Engineering",
+        "fee": 200000
+      },
+      "EEE": {
+        "name": "Electrical & Electronics Engineering",
+        "fee": 100000
+      },
+      "ME": {
+        "name": "Mechanical Engineering",
+        "fee": 100000
+      },
+      "CE": {
+        "name": "Civil Engineering",
+        "fee": 100000
+      }
+    },
+    "BBA": {
+      "BBA_AI": {
+        "name": "BBA (Hons) with AI Specialization",
+        "fee": 150000
+      }
+    }
+  },
+  "admission_fee": 10000,
+  "book_bank_fee": 5000,
+  "placements": {
+    "average_package": "6.5 LPA",
+    "highest_package": "44 LPA",
+    "placement_rate": "85%",
+    "placed_2025": "500+",
+    "top_companies": [
+      "Amazon",
+      "TCS",
+      "Infosys",
+      "Wipro",
+      "Cognizant",
+      "HCL",
+      "Tech Mahindra",
+      "Capgemini",
+      "Accenture",
+      "IBM",
+      "Deloitte"
+    ]
+  },
+  "hostel": {
+    "type": "Fully Air-Conditioned, separate Boys & Girls",
+    "fee_range": "1,00,000 - 1,50,000 per year",
+    "includes": "food, WiFi, 24/7 security"
+  },
+  "scholarships": {
+    "btech_50_25": "Class 12 >=95% or VVITAT/JEE >=93 percentile → fee 1,00,000-1,50,000",
+    "btech_15": "Class 12 90-94.99% or VVITAT 80-92.99 → fee 1,70,000",
+    "bba_50": "Class 12 >=90%, SAT >=1200 → fee 75,000",
+    "bba_30": "Class 12 80-89.99%, SAT 1100-1199 → fee 1,05,000"
+  },
+  "vvitat_2026": {
+    "date": "28th March 2026 (Saturday)",
+    "mode": "Objective MCQ",
+    "questions": 100,
+    "marks": 200,
+    "duration": "150 Minutes",
+    "negative_marking": false,
+    "sections": [
+      "Mathematics 25Q",
+      "Physics 25Q",
+      "Chemistry 25Q",
+      "English & Reasoning 25Q"
+    ]
+  },
+  "global": {
+    "mou1": "RWTH Aachen University, Germany",
+    "mou2": "SGIT Steinbeis University, Germany",
+    "programs": [
+      "Stanford UIF",
+      "EPICS @ Purdue University"
+    ]
+  },
+  "certifications": [
+    "Google",
+    "AWS",
+    "CISCO",
+    "Red Hat",
+    "Salesforce",
+    "UiPath",
+    "NASSCOM"
+  ],
+  "facilities": {
+    "wifi": "High-speed WiFi across campus",
+    "pool": "Swimming Pool",
+    "labs": "Modern Computer, AI & Engineering Labs",
+    "ai_lab": "AI & Deep Learning Lab with NVIDIA",
+    "google_lab": "India's First Google Developer Code Lab",
+    "auditorium": "Large Auditorium",
+    "medical": "Medical room with first aid",
+    "library_books": "50,000+"
+  },
+  "sports": [
+    "Cricket",
+    "Football",
+    "Volleyball",
+    "Badminton",
+    "Archery",
+    "Basketball",
+    "Chess",
+    "Kabaddi",
+    "Swimming"
+  ],
+  "clubs": [
+    "Coding",
+    "Robotics",
+    "UI/UX",
+    "Animation",
+    "Music",
+    "Dance",
+    "Photography",
+    "Drama",
+    "Technical",
+    "Art",
+    "Cooking"
+  ],
+  "student_chapters": [
+    "IEEE",
+    "IETE",
+    "IUCEE",
+    "ACM",
+    "VVISC"
+  ]
+}
