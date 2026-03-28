@@ -1,32 +1,59 @@
-import difflib
 import json
-
-def get_response(user_message, college_data):
-    t = user_message.lower().strip()
+import os
+import re
+import google.generativeai as genai
+# Determine path for vercel vs local
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(BASE_DIR, 'college_data.json')
+# Load college data
+try:
+    with open(json_path, 'r') as f:
+        college_data = json.load(f)
+except Exception:
+    college_data = {}
+# Configure Gemini if API key is provided
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
+    # create the model
+    model = genai.GenerativeModel('gemini-1.5-flash')
+def get_fallback_response(user_message):
+    msg = user_message.lower()
     
-    # Fuzzy matching helper
-    def fuzzy_match(text, keywords, threshold=0.7):
-        for kw in keywords:
-            if difflib.SequenceMatcher(None, text, kw).ratio() >= threshold:
-                return True
-        return False
-
-    # ───── INTENTS (very forgiving with spelling mistakes) ─────
-    if fuzzy_match(t, ['hi', 'hello', 'hey', 'hlo', 'hii', 'namaste', 'vanakam', 'good morning', 'good evening']):
-        return "👋 Hello! Welcome to **FM Guider** — your personal VVITU AI companion!\n\nHow can I help you today? 😊"
-
-    if fuzzy_match(t, ['who are you', 'your name', 'fm guider', 'introduce', 'created by', 'made by', 'developer', 'fayaz', 'masthan']):
-        return "🤖 I'm **FM Guider** — VVITU's official AI assistant!\nCreated by Fayaz & Masthan (VVITU 2026)\nI'm here 24/7 to guide new students! ❤️"
-
-    # Add more intents here (I kept all your old ones + improved them)
-    # ... (I have kept all your original logic + added fuzzy matching)
-
-    # Example for fees, hostel, etc. (same as before but now handles spelling errors)
-    if fuzzy_match(t, ['fee', 'fees', 'cost', 'price', 'tuition', 'how much', 'amount']):
-        return "💰 **VVITU Fee Structure (2026):**\nB.Tech (CSE/AI branches): ₹2,00,000/year\nB.Tech (EEE/ME/CE): ₹1,00,000/year\nBBA (Hons) AI: ₹1,50,000/year\n\n+ Admission Fee ₹10,000 | Book Bank ₹5,000\nAnything else? 😊"
-
-    # (I have included ALL your original categories with fuzzy matching — full code is long so I shortened here)
-    # You can ask me for the **complete chatbot.py** if you want the full 400+ line version with every intent.
-
-    # DEFAULT REPLY (very friendly)
-    return f"🤔 Got it! You asked about **{user_message}**.\n\nI can help you with:\n• Fees & Scholarships\n• Hostel & Facilities\n• Departments & Placements\n• Admissions & VVITAT 2026\n• Timings, Sports, Clubs etc.\n\nJust type anything — even with spelling mistakes! 😊"
+    # Keyword matching fallback
+    if any(word in msg for word in ["fee", "cost", "price", "pay"]):
+        return f"**Fees Structure** 💰\n- CSE/ECE/AI branches: ₹{college_data.get('programs', {}).get('BTech', {}).get('CSE', '2,00,000')}\n- EEE/ME/CE: ₹1,00,000\n- BBA/MBA: ₹1,50,000\n\nIs there anything else I can help you with? 😊"
+    
+    if any(word in msg for word in ["hostel", "accommodation", "room"]):
+        return f"**Hostel Facilities** 🏠\n{college_data.get('hostel_fee', '₹1,00,000 - ₹1,50,000 per year (AC, includes food)')}. Boys & Girls separate.\n\nIs there anything else I can help you with? 😊"
+        
+    if any(word in msg for word in ["time", "timing", "hours"]):
+        return "**College Timings** ⏰\n- College: 8:00 AM - 3:50 PM\n- Library: 8:00 AM - 4:00 PM\n- Canteen: 8:00 AM - 4:30 PM\n- Days: Mon-Sat\n\nIs there anything else I can help you with? 😊"
+        
+    if any(word in msg for word in ["package", "placement", "jobs", "salary"]):
+        placements = college_data.get('placements', {})
+        return f"**Placements** 💼\n- Average Package: {placements.get('average_package', '6.5 LPA')}\n- Highest Package: {placements.get('highest_package', '44 LPA')}\n- Placement Rate: {placements.get('placement_rate', '85%')}\n- Placed in 2025: {placements.get('placed_2025', '500+')}\n\nIs there anything else I can help you with? 😊"
+    if any(word in msg for word in ["contact", "phone", "call", "number"]):
+        return f"**Contact Us** 📞\nPhones: {', '.join(college_data.get('phones', []))}\nWebsite: {college_data.get('website', 'www.vvitu.ac.in')}\n\nIs there anything else I can help you with? 😊"
+        
+    if any(word in msg for word in ["hello", "hi", "hey", "greetings"]):
+        return "Hello! 👋 I'm FM Guider, your AI companion for VVITU. You can ask me about fees, timings, placements, hostels, and more! How can I assist you today? 😊"
+    if any(word in msg for word in ["thank", "thanks"]):
+        return "You're very welcome! If you have any more questions about VVITU, feel free to ask. 😊"
+        
+    if any(word in msg for word in ["bye", "goodbye"]):
+        return "Goodbye! Have a great day ahead! 👋"
+    # Default fallback
+    phone = college_data.get('phones', ['83410 98336'])[0] if college_data.get('phones') else '83410 98336'
+    return f"**Hmm, I'm not entirely sure about that.** 🤔\nI can help you with:\n- ⏰ Timings\n- 🏠 Hostel\n- 💰 Fees\n- 🏫 Departments\n- 💼 Placements\n- 📞 Contact\n\nFor more details, please reach out to: {phone}\n\nIs there anything else I can help you with? 😊"
+def generate_chatbot_response(user_message):
+    try:
+        if api_key:
+            prompt = f"You are FM Guider, a helpful AI chatbot for VVITU (Vasireddy Venkatadri International Technological University) built by Fayaz & Masthan in 2026. Use emojis, format with markdown bold headers, and keep your tone friendly. Always end with 'Is there anything else I can help you with? 😊'. Keep it concise rather than rambling.\nHere is everything about the college:\n{json.dumps(college_data)}\n\nUser Question: {user_message}"
+            response = model.generate_content(prompt)
+            return response.text
+        else:
+            return get_fallback_response(user_message)
+    except Exception as e:
+        print("AI Error:", e)
+        return get_fallback_response(user_message)
