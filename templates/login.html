@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FM Guider VVITU</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
 <body>
-
-<h2>FM Guider Login</h2>
-
-{% if step == "email" %}
-<form method="post">
-  <input type="email" name="email" placeholder="Enter Email" required>
-  <button type="submit">Send OTP</button>
-</form>
-{% endif %}
-
-{% if step == "verify" %}
-<form action="/verify" method="post">
-  <input type="hidden" name="email" value="{{email}}">
-  <input type="text" name="otp" placeholder="Enter OTP">
-  <button type="submit">Verify</button>
-</form>
-{% endif %}
-
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="auth-container">
+        <div class="auth-card float-anim">
+            <h1 class="syne-font"><span class="gradient-text">FM Guider</span> 🎓</h1>
+            <p class="badge" style="display:inline-block; margin-top:10px;">VVITU — EST. 2007</p>
+            
+            <p style="margin: 20px 0; color: var(--muted);">Please enter your details to continue</p>
+            <form action="/login" method="POST">
+                <div class="input-group">
+                    <label>👤 Student Name</label>
+                    <input type="text" name="student_name" placeholder="Enter your full name" required>
+                </div>
+                <div class="input-group">
+                    <label>📱 Mobile Number</label>
+                    <input type="tel" name="mobile_number" placeholder="Enter 10-digit number" pattern="[0-9]{10}" required>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 10px;">Login securely 🚀</button>
+            </form>
+            
+            <p style="margin-top: 20px; font-size: 0.85rem; color: var(--muted);">By logging in, you agree to access VVITU systems.</p>
+        </div>
+    </div>
 </body>
 </html>
