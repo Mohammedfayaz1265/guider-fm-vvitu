@@ -18,8 +18,11 @@ def load_users():
                 return []
     return []
 def save_users(users):
-    with open(USERS_FILE, 'w') as f:
-        json.dump(users, f, indent=4)
+    try:
+        with open(USERS_FILE, 'w') as f:
+            json.dump(users, f, indent=4)
+    except Exception as e:
+        print(f"Warning: Could not save users.json (Vercel Read-Only File System): {e}")
 @app.route("/", methods=["GET"])
 @app.route("/login", methods=["GET", "POST"])
 def login():
