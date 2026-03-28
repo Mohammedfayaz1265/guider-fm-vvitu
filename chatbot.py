@@ -58,7 +58,7 @@ User Question: {user_message}"""
             response = model.generate_content(prompt)
             return response.text
         else:
-            return get_fallback_response(user_message)
+            return "⚠️ **ERROR: API Key is missing!** You have not added `GEMINI_API_KEY` to your Vercel Environment Variables, or you forgot to Redeploy after adding it."
     except Exception as e:
         print("AI Error:", e)
-        return get_fallback_response(user_message)
+        return f"⚠️ **AI Error:** {str(e)}"
