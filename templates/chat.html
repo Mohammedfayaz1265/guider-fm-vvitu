@@ -3,183 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FM Guider – VVITU AI Companion</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-        :root {
-            --bg: #0d0618;
-            --bg2: #130a24;
-            --purple: #7c3aed;
-            --pink: #ec4899;
-            --magenta: #d946ef;
-            --card: rgba(255,255,255,0.04);
-            --border: rgba(255,255,255,0.08);
-            --text: #f0e8ff;
-            --muted: #9c8db5;
-            --user-bubble: linear-gradient(135deg, #ec4899, #7c3aed);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        .page { display: none; }
-        .page.active { display: flex; flex-direction: column; }
-        #landing.active { min-height: 100vh; }
-        #chatbot.active { height: 100vh; max-height: 100vh; overflow: hidden; background: #f7f0ff; }
-
-        /* Your original beautiful styles remain the same — I kept them all */
-        /* (Copy-pasted your full CSS here for completeness) */
-        .l-nav, .l-hero, .bot-card, .c-header, .c-pills, .c-messages, .msg, .msg-bubble, .c-input-bar, .btn-send {
-            /* All your original CSS is preserved — no changes needed in visual part */
-        }
-        /* ... (your full CSS from the provided code goes here) ... */
-        /* For brevity in this response, assume you keep your entire <style> block as-is */
-    </style>
+    <title>Chat with FM Guider</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
-<body>
-
-<!-- LANDING PAGE (unchanged - your beautiful design) -->
-<div id="landing" class="page active">
-  <!-- Your full landing HTML remains exactly the same -->
-  <nav class="l-nav">
-    <div class="l-logo"><span>FM</span> Guider</div>
-    <button class="btn-open" onclick="goTo('chatbot')">🤖 Open Chatbot</button>
-  </nav>
-  <!-- ... rest of your landing content ... -->
-</div>
-
-<!-- CHATBOT PAGE -->
-<div id="chatbot" class="page">
-  <div class="c-header">
-    <div class="c-header-icon">🎓</div>
-    <div class="c-header-info">
-      <h1>FM Guider</h1>
-      <p>Your VVITU AI Companion — by Fayaz & Masthan</p>
+<body style="background:var(--dark);">
+    <div class="chat-container">
+        <!-- HEADER -->
+        <div class="chat-header">
+            <a href="/home" class="back-btn">&#8592;</a>
+            <div style="font-size:2rem; animation: float 3s ease infinite;">🎓</div>
+            <div>
+                <h3 class="syne-font" style="margin:0;">FM Guider</h3>
+                <p style="margin:0; font-size:0.8rem; color:var(--muted);">AI Companion by Fayaz & Masthan</p>
+            </div>
+            <div class="online-dot"></div>
+        </div>
+        <!-- PILLS -->
+        <div class="pills-wrap">
+            <div class="pills-content" id="pillsContainer">
+                <button class="pill" onclick="sendPill('What are the college timings?')">⏰ Timings</button>
+                <button class="pill" onclick="sendPill('Tell me about Hostel facilities')">🏠 Hostel</button>
+                <button class="pill" onclick="sendPill('What are the fees?')">💰 Fees</button>
+                <button class="pill" onclick="sendPill('What departments do you have?')">🏫 Departments</button>
+                <button class="pill" onclick="sendPill('Tell me about Placements and Packages')">💼 Packages</button>
+                <button class="pill" onclick="sendPill('What are the extracurricular activities?')">🎉 Activities</button>
+                <button class="pill" onclick="sendPill('How to get admission?')">📝 Admission</button>
+                <button class="pill" onclick="sendPill('Library timings and books?')">📚 Library</button>
+                <button class="pill" onclick="sendPill('Transport and Bus facilities?')">🚌 Transport</button>
+                <button class="pill" onclick="sendPill('Scholarship details?')">🎓 Scholarships</button>
+                <!-- Duplicated for seamless scroll -->
+                <button class="pill" onclick="sendPill('What are the college timings?')">⏰ Timings</button>
+                <button class="pill" onclick="sendPill('Tell me about Hostel facilities')">🏠 Hostel</button>
+                <button class="pill" onclick="sendPill('What are the fees?')">💰 Fees</button>
+                <button class="pill" onclick="sendPill('What departments do you have?')">🏫 Departments</button>
+                <button class="pill" onclick="sendPill('Tell me about Placements and Packages')">💼 Packages</button>
+            </div>
+        </div>
+        <!-- MESSAGES AREA -->
+        <div class="chat-area" id="chatArea">
+            <div class="msg msg-bot">
+                <strong>Hello! 👋</strong><br>
+                I'm FM Guider, your AI companion for VVITU. How can I assist you today? 😊
+            </div>
+            
+            <div class="typing" id="typingIndicator">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <!-- INPUT BAR -->
+        <div class="chat-input-bar">
+            <input type="text" id="userInput" class="chat-input" placeholder="Type your message here..." onkeypress="handleEnter(event)">
+            <button class="btn-send" onclick="sendMessage()">&#10148;</button>
+        </div>
     </div>
-    <button class="btn-close" onclick="goTo('landing')" title="Back to Home">✕</button>
-  </div>
-
-  <div class="c-pills">
-    <button class="pill" onclick="sendQuick('What are the college timings?')">⏰ Timings</button>
-    <button class="pill" onclick="sendQuick('Tell me about hostel facilities and fees')">🏠 Hostel</button>
-    <button class="pill" onclick="sendQuick('What are the course fees?')">💰 Fees</button>
-    <button class="pill" onclick="sendQuick('What departments are available?')">🏫 Departments</button>
-    <button class="pill" onclick="sendQuick('What are the placement statistics?')">💼 Placements</button>
-  </div>
-
-  <div class="c-messages" id="messages">
-    <!-- Welcome message from bot -->
-    <div class="msg bot">
-      <div class="msg-avatar">🎓</div>
-      <div class="msg-bubble">
-        👋 Hi! I'm <strong>FM Guider</strong>, your friendly VVITU AI assistant.<br><br>
-        Ask me anything — even with spelling mistakes! (fees, hostle, placment, departmnt, etc.)<br>
-        I'm here 24/7 😊
-      </div>
-    </div>
-  </div>
-
-  <div class="c-input-bar">
-    <input class="c-input" id="userInput" type="text" 
-           placeholder="Ask anything about VVITU (spelling mistakes OK)..." 
-           onkeydown="if(event.key==='Enter') sendMsg()">
-    <button class="btn-send" onclick="sendMsg()">➤</button>
-  </div>
-</div>
-
-<script>
-// Page switch
-function goTo(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  if (pageId === 'chatbot') setTimeout(() => document.getElementById('userInput').focus(), 300);
-}
-
-// Add message to UI
-function addMsg(text, role) {
-  const messagesEl = document.getElementById('messages');
-  const wrap = document.createElement('div');
-  wrap.className = `msg ${role}`;
-  const avatar = document.createElement('div');
-  avatar.className = 'msg-avatar';
-  avatar.textContent = role === 'bot' ? '🎓' : '👤';
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  bubble.innerHTML = text.replace(/\n/g, '<br>');
-  wrap.append(avatar, bubble);
-  messagesEl.appendChild(wrap);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-// Typing indicator
-function showTyping() {
-  const messagesEl = document.getElementById('messages');
-  const typingId = 'typing-indicator';
-  if (document.getElementById(typingId)) return;
-  const wrap = document.createElement('div');
-  wrap.className = 'msg bot';
-  wrap.id = typingId;
-  wrap.innerHTML = `
-    <div class="msg-avatar">🎓</div>
-    <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>
-  `;
-  messagesEl.appendChild(wrap);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-function removeTyping() {
-  const t = document.getElementById('typing-indicator');
-  if (t) t.remove();
-}
-
-// Send message to Flask backend
-async function sendMsg() {
-  const input = document.getElementById('userInput');
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMsg(text, 'user');
-  input.value = '';
-  showTyping();
-
-  try {
-    const res = await fetch('/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
-    });
-    const data = await res.json();
-    removeTyping();
-    addMsg(data.response || "Sorry, I couldn't understand that.", 'bot');
-  } catch (e) {
-    removeTyping();
-    addMsg("I'm having trouble connecting right now. Please try again! 😊", 'bot');
-  }
-}
-
-function sendQuick(text) {
-  addMsg(text, 'user');
-  showTyping();
-  // Reuse same logic
-  fetch('/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: text })
-  })
-  .then(r => r.json())
-  .then(data => {
-    removeTyping();
-    addMsg(data.response, 'bot');
-  })
-  .catch(() => {
-    removeTyping();
-    addMsg("Sorry, something went wrong. Try typing manually! 😊", 'bot');
-  });
-}
-</script>
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const userInput = document.getElementById('userInput');
+        const typingIndicator = document.getElementById('typingIndicator');
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        function sendPill(text) {
+            // Remove active classes from all pills
+            document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+            // Highlight clicked pill (event target)
+            if(event && event.target) {
+                event.target.classList.add('active');
+            }
+            userInput.value = text;
+            sendMessage();
+        }
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            // Add user message
+            appendMessage(message, 'user');
+            userInput.value = '';
+            
+            // Show typing indicator
+            typingIndicator.style.display = 'flex';
+            chatArea.appendChild(typingIndicator); // move to bottom
+            scrollToBottom();
+            try {
+                const response = await fetch('/api/send-msg', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                
+                // Hide typing
+                typingIndicator.style.display = 'none';
+                
+                if (data.error) {
+                    appendMessage("Error: " + data.error, 'bot');
+                } else {
+                    // Convert markdown bold to HTML
+                    let htmlResponse = marked.parse(data.response);
+                    appendHTMLMessage(htmlResponse, 'bot');
+                }
+            } catch (err) {
+                typingIndicator.style.display = 'none';
+                appendMessage("Sorry, I'm having trouble connecting to the server.", 'bot');
+            }
+            scrollToBottom();
+        }
+        function appendMessage(text, sender) {
+            const div = document.createElement('div');
+            div.className = `msg msg-${sender}`;
+            div.innerText = text;
+            chatArea.insertBefore(div, typingIndicator);
+            scrollToBottom();
+        }
+        
+        function appendHTMLMessage(html, sender) {
+            const div = document.createElement('div');
+            div.className = `msg msg-${sender}`;
+            div.innerHTML = html;
+            chatArea.insertBefore(div, typingIndicator);
+            scrollToBottom();
+        }
+    </script>
 </body>
 </html>
+
+
+
+
+
