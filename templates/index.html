@@ -3,34 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FM Guider - Home</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0d0618, #4a0080);
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-            min-height: 100vh;
-        }
-        h1 { font-size: 3rem; margin-bottom: 20px; }
-        .btn {
-            padding: 15px 30px;
-            margin: 15px;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-        }
-        .btn-chat { background: linear-gradient(90deg, #ec4899, #7c3aed); color: white; }
-        .btn-logout { background: #666; color: white; }
-    </style>
+    <title>FM Guider - VVITU</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Welcome, {{ user_name }} 👋</h1>
-    <p style="font-size: 1.3rem; margin: 20px 0;">Ready to explore VVITU?</p>
-    
-    <a href="/chat"><button class="btn btn-chat">🚀 Start Chat with FM Guider</button></a>
-    <a href="/logout"><button class="btn btn-logout">Logout</button></a>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <h2 class="syne-font" style="color:white;">FM <span style="color:var(--pink);">Guider</span></h2>
+        </div>
+        <div class="nav-actions">
+            <span class="badge badge-user">👤 {{ user_name }}</span>
+            <a href="/chat" class="btn-primary" style="padding: 8px 15px; font-size: 0.9rem;">🤖 Chatbot</a>
+            <a href="/logout" class="logout" style="font-weight: bold; font-size: 0.9rem;">Logout</a>
+        </div>
+    </nav>
+    <!-- TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker-content">
+            <div class="ticker-item">
+                VVITU Est. 2007 <span>✦</span> 9+ Programs <span>✦</span> Avg Package 6.5 LPA <span>✦</span> Highest Package 44 LPA <span>✦</span> 5000+ Students <span>✦</span> 50,000+ Books <span>✦</span> 85% Placement Rate <span>✦</span> MoUs RWTH Aachen Germany <span>✦</span> Buses from 7:00 AM <span>✦</span> AP-EAPCET VVITU VVITPU <span>✦</span>
+                VVITU Est. 2007 <span>✦</span> 9+ Programs <span>✦</span> Avg Package 6.5 LPA <span>✦</span> Highest Package 44 LPA <span>✦</span> 5000+ Students <span>✦</span> 50,000+ Books <span>✦</span> 85% Placement Rate <span>✦</span> MoUs RWTH Aachen Germany <span>✦</span> Buses from 7:00 AM <span>✦</span> AP-EAPCET VVITU VVITPU
+            </div>
+        </div>
+    </div>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="badge">🎓 EST. 2007 — NAMBUR, GUNTUR, A.P.</div>
+        <h1 class="syne-font float-anim">Welcome to <span class="gradient-text">VVITU</span></h1>
+        <p class="subtitle">Vasireddy Venkatadri International Technological University</p>
+        <p class="motto">"Absolute Discipline & Absolute Education"</p>
+        
+        <div class="hero-btns">
+            <button class="btn-outline" onclick="openPdfModal()">📄 View College Brochure 2025–26</button>
+            <a href="/chat" class="btn-primary" style="width:auto;">🤖 Chat with FM Guider</a>
+            <a href="#gallery" class="btn-outline">📸 Explore Campus</a>
+        </div>
+    </section>
+    <!-- STATS -->
+    <div class="stats-bar syne-font">
+        <div class="stat-item"><h3>9+</h3><p>Programs</p></div>
+        <div class="stat-item"><h3>5000+</h3><p>Students</p></div>
+        <div class="stat-item"><h3>6.5 LPA</h3><p>Avg Package</p></div>
+        <div class="stat-item"><h3>44 LPA</h3><p>Highest Package</p></div>
+        <div class="stat-item"><h3>50K+</h3><p>Books</p></div>
+        <div class="stat-item"><h3>2007</h3><p>Established</p></div>
+    </div>
+    <!-- GALLERY -->
+    <section id="gallery" class="gallery-section">
+        <h2>Explore Our Campus</h2>
+        <div class="grid-container">
+            <div class="gallery-img img1" onclick="openLightbox('/static/campus1.jpg')"><img src="/static/campus1.jpg" alt="Campus 1" onerror="this.src='https://placehold.co/800x400/1a0533/white?text=Campus+Photo+1'"></div>
+            <div class="gallery-img img2" onclick="openLightbox('/static/campus2.jpg')"><img src="/static/campus2.jpg" alt="Campus 2" onerror="this.src='https://placehold.co/600x400/1a0533/white?text=Campus+Photo+2'"></div>
+            <div class="gallery-img img3" onclick="openLightbox('/static/campus3.jpg')"><img src="/static/campus3.jpg" alt="Campus 3" onerror="this.src='https://placehold.co/500x300/1a0533/white?text=Campus+Photo+3'"></div>
+            <div class="gallery-img img4" onclick="openLightbox('/static/campus4.jpg')"><img src="/static/campus4.jpg" alt="Campus 4" onerror="this.src='https://placehold.co/500x300/1a0533/white?text=Campus+Photo+4'"></div>
+        </div>
+    </section>
+    <!-- CTA -->
+    <div class="cta-card float-anim">
+        <h1 style="font-size: 3rem;">🤖</h1>
+        <h2 class="syne-font gradient-text">Meet FM Guider</h2>
+        <p style="color:var(--muted); margin-bottom: 20px;">Your personal AI assistant for everything VVITU.</p>
+        <a href="/chat" class="btn-primary" style="width:200px; display:inline-block;">💬 Start Chatting Now</a>
+    </div>
+    <!-- FOOTER -->
+    <footer>
+        <p>Vasireddy Venkatadri International Technological University</p>
+        <p>Nambur (V), Pedakakani (M), Guntur (Dt), A.P. - 522508</p>
+        <p>83410 98336 | www.vvitu.ac.in</p>
+        <p style="margin-top:10px; font-size: 0.8rem; color: #555;">Built with ❤️ by Fayaz & Masthan | VVITU Class of 2026</p>
+    </footer>
+    <!-- PDF MODAL -->
+    <div class="modal" id="pdfModal">
+        <div class="modal-close" onclick="closePdfModal()">&times;</div>
+        <iframe src="/static/brochure.pdf"></iframe>
+    </div>
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lb-close" onclick="closeLightbox()">&times;</div>
+        <div class="lb-nav lb-prev" onclick="changeImage(-1)">&#10094;</div>
+        <img class="lb-img" id="lbImg" src="">
+        <div class="lb-nav lb-next" onclick="changeImage(1)">&#10095;</div>
+    </div>
+    <script>
+        // PDF Modal
+        function openPdfModal() { document.getElementById('pdfModal').style.display = 'flex'; }
+        function closePdfModal() { document.getElementById('pdfModal').style.display = 'none'; }
+        
+        // Lightbox
+        const images = ["/static/campus1.jpg", "/static/campus2.jpg", "/static/campus3.jpg", "/static/campus4.jpg"];
+        let currentImgIndex = 0;
+        function openLightbox(src) {
+            currentImgIndex = images.indexOf(src);
+            document.getElementById('lbImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+        
+        function changeImage(direction) {
+            currentImgIndex += direction;
+            if (currentImgIndex < 0) currentImgIndex = images.length - 1;
+            if (currentImgIndex >= images.length) currentImgIndex = 0;
+            document.getElementById('lbImg').src = images[currentImgIndex];
+        }
+        // Keyboard Support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeLightbox(); closePdfModal(); }
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+            }
+        });
+    </script>
 </body>
 </html>
