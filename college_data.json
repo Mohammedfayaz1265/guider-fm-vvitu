@@ -1,25 +1,27 @@
 {
   "college_name": "Vasireddy Venkatadri International Technological University",
-  "chairman": "Vasireddy Vidya Sagar",
-  "Vice Chairman": "Mahadev Vasireddy",
-  "register": "Dr. Yennapusa Mallikarjuna Reddy",
-  "Secretary": "Sri. S. Badari Prasad",
-  "Vice-Chancellor": "Dr. Kodali Rambabu",
-  "Joint Secretary": "Sri. M. Sree Krishna",
-  "Director": "Dr. P. Nageswara Rao",
-  "Dean (Administration)": "Dr. N. Kumarswamy",
-  "Dean (Academics)": "Dr. K. Giribabu",
   "short_name": "VVITU",
   "established": "2007",
   "motto": "Absolute Discipline and Absolute Education",
   "location": "Nambur, Guntur, Andhra Pradesh - 522 508",
+  "website": "www.vvitu.ac.in",
+  "eapcet_code": "VVITU / VVITPU",
+  "administration": {
+    "chairman": "Vasireddy Vidya Sagar",
+    "vice_chairman": "Mahadev Vasireddy",
+    "registrar": "Dr. Yennapusa Mallikarjuna Reddy",
+    "secretary": "Sri. S. Badari Prasad",
+    "vice_chancellor": "Dr. Kodali Rambabu",
+    "joint_secretary": "Sri. M. Sree Krishna",
+    "director": "Dr. P. Nageswara Rao",
+    "dean_administration": "Dr. N. Kumarswamy",
+    "dean_academics": "Dr. K. Giribabu"
+  },
   "phones": [
     "83410 98336",
     "81794 88336",
     "77029 43336"
   ],
-  "website": "www.vvitu.ac.in",
-  "eapcet_code": "VVITU / VVITPU",
   "programs": {
     "BTech": {
       "CSE": 200000,
@@ -42,18 +44,16 @@
     "placed_2025": "500+"
   },
   "hostel_fee": "1,00,000 - 1,50,000 per year (AC, includes food)",
-  "vvitat_2026": "28th March 2026, 100Q, 200 Marks, 150 Minutes, No Negative",
-  "global": "MoUs with RWTH Aachen & Steinbeis University, Germany"
-}
-,
+  "vvitat_2026": {
+    "date": "28th March 2026",
+    "questions": 100,
+    "marks": 200,
+    "duration_minutes": 150,
+    "negative_marking": false
+  },
+  "global_collaborations": "MoUs with RWTH Aachen & Steinbeis University, Germany",
   "certifications": [
-    "Google",
-    "AWS",
-    "CISCO",
-    "Red Hat",
-    "Salesforce",
-    "UiPath",
-    "NASSCOM"
+    "Google", "AWS", "CISCO", "Red Hat", "Salesforce", "UiPath", "NASSCOM"
   ],
   "facilities": {
     "wifi": "High-speed WiFi across campus",
@@ -66,34 +66,11 @@
     "library_books": "50,000+"
   },
   "sports": [
-    "Cricket",
-    "Football",
-    "Volleyball",
-    "Badminton",
-    "Archery",
-    "Basketball",
-    "Chess",
-    "Kabaddi",
-    "Swimming"
+    "Cricket", "Football", "Volleyball", "Badminton", "Archery", "Basketball", "Chess", "Kabaddi", "Swimming"
   ],
   "clubs": [
-    "Coding",
-    "Robotics",
-    "UI/UX",
-    "Animation",
-    "Music",
-    "Dance",
-    "Photography",
-    "Drama",
-    "Technical",
-    "Art",
-    "Cooking"
+    "Coding", "Robotics", "UI/UX", "Animation", "Music", "Dance", "Photography", "Drama", "Technical", "Art", "Cooking"
   ],
   "student_chapters": [
-    "IEEE",
-    "IETE",
-    "IUCEE",
-    "ACM",
-    "VVISC"
+    "IEEE", "IETE", "IUCEE", "ACM", "VVISC"
   ]
-}
