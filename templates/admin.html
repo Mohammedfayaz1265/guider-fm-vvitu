@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Details</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;}
+        .admin-table th, .admin-table td { padding: 15px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .admin-table th { background: rgba(255,255,255,0.1); }
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+    </style>
+</head>
+<body style="padding: 40px; max-width: 800px; margin: 0 auto;">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 class="syne-font gradient-text">Admin Panel 🛠️</h2>
+        <a href="/" class="btn-outline btn-sm">← Back to App</a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>
+                    <form method="POST" style="margin:0;">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="mobile" value="{{ user.mobile }}">
+                        <button type="submit" style="background:#ff4b4b; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" style="text-align:center; color: var(--muted);">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
