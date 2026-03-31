@@ -1,7 +1,7 @@
 import json
 import os
 import re
-import google.generativeai as genai
+import requests
 
 # Determine path for vercel vs local
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,10 +16,6 @@ except Exception:
 
 # Configure Gemini if API key is provided
 api_key = os.environ.get("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
-    # create the model
-    model = genai.GenerativeModel('gemini-1.5-flash')
 
 def get_fallback_response(user_message):
     msg = user_message.lower()
@@ -64,10 +60,24 @@ If they ask something unrelated to the college, still answer them nicely like a 
 Use emojis and friendly markdown. End with 'Is there anything else I can help you with? 😊'.
 
 User Question: {user_message}"""
-            response = model.generate_content(prompt)
-            return response.text
+            
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+            headers = {"Content-Type": "application/json"}
+            payload = {"contents": [{"parts": [{"text": prompt}]}]}
+            
+            response = requests.post(url, headers=headers, json=payload)
+            data = response.json()
+            
+            if response.status_code == 200:
+                try:
+                    return data['candidates'][0]['content']['parts'][0]['text']
+                except (KeyError, IndexError):
+                    return f"⚠️ **AI Response Parsing Error:** Could not read Google's response."
+            else:
+                err_msg = data.get('error', {}).get('message', 'Unknown Error')
+                return f"⚠️ **Google API Error ({response.status_code}):** {err_msg}"
         else:
             return "⚠️ **ERROR: API Key is missing!** You have not added `GEMINI_API_KEY` to your Vercel Environment Variables, or you forgot to Redeploy after adding it."
     except Exception as e:
         print("AI Error:", e)
-        return f"⚠️ **AI Error:** {str(e)}"
+        return f"⚠️ **AI System Error:** {str(e)}"
