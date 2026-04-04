@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - FM Guider VVITU</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
     <div class="floating-orb orb-1"></div>
     <div class="floating-orb orb-2"></div>
@@ -13,22 +15,79 @@
         <div class="auth-card float-anim">
             <h1 class="syne-font"><span class="gradient-text">FM Guider</span> 🎓</h1>
             <p class="badge" style="display:inline-block; margin-top:10px;">VVITU — EST. 2007</p>
-            
+
             <p style="margin: 20px 0; color: var(--muted);">Please enter your details to continue</p>
-            <form action="/login" method="POST">
+            <form id="loginForm">
                 <div class="input-group">
                     <label>👤 Student Name</label>
-                    <input type="text" name="student_name" placeholder="Enter your full name" required>
+                    <input type="text" id="student_name" name="student_name" placeholder="Enter your full name"
+                        required>
                 </div>
                 <div class="input-group">
                     <label>📱 Mobile Number</label>
-                    <input type="tel" name="mobile_number" placeholder="Enter 10-digit number" pattern="[0-9]{10}" required>
+                    <input type="tel" id="mobile_number" name="mobile_number" placeholder="Enter 10-digit number"
+                        pattern="[0-9]{10}" maxlength="10" minlength="10"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '');" required>
                 </div>
-                <button type="submit" class="btn-primary" style="margin-top: 10px;">Login securely 🚀</button>
+                <button type="submit" id="submitBtn" class="btn-primary" style="margin-top: 10px;">Login securely
+                    🚀</button>
             </form>
-            
-            <p style="margin-top: 20px; font-size: 0.85rem; color: var(--muted);">By logging in, you agree to access VVITU systems.</p>
+
+            <p style="margin-top: 20px; font-size: 0.85rem; color: var(--muted);">By logging in, you agree to access
+                VVITU systems.</p>
         </div>
     </div>
+
+    <script>
+        // ============================================================
+        //  🔗 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+        // ============================================================
+        const GAS_WEB_URL = "https://script.google.com/macros/s/AKfycbxFUJ4bVBKF7SjKN7crFamSCXb6MhDTUi-v_a7Mm6e151IyyyOeUOOPBHEDmZ3Mdv2A/exec";
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const name = document.getElementById('student_name').value.trim();
+            const mobile = document.getElementById('mobile_number').value.trim();
+
+            if (mobile.length !== 10) {
+                alert("Please enter a valid 10-digit mobile number.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = "Logging in... ✨";
+
+            try {
+                const response = await fetch(GAS_WEB_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'login',
+                        name: name,
+                        mobile: mobile
+                    }),
+                    redirect: 'follow'
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    btn.disabled = false;
+                    btn.innerHTML = "Login securely 🚀";
+                } else {
+                    // Redirect to chat page on success
+                    window.location.href = "/chat";
+                }
+            } catch (err) {
+                console.error("Login Error: ", err);
+                // Fallback redirect if CORS / opaque response block reading json
+                window.location.href = "/chat";
+            }
+        });
+    </script>
 </body>
+
 </html>
