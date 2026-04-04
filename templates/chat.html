@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
+
 <body style="background:var(--dark);">
     <div class="chat-container">
         <!-- HEADER -->
@@ -27,7 +29,8 @@
                 <button class="pill" onclick="sendPill('What are the fees?')">💰 Fees</button>
                 <button class="pill" onclick="sendPill('What departments do you have?')">🏫 Departments</button>
                 <button class="pill" onclick="sendPill('Tell me about Placements and Packages')">💼 Packages</button>
-                <button class="pill" onclick="sendPill('What are the extracurricular activities?')">🎉 Activities</button>
+                <button class="pill" onclick="sendPill('What are the extracurricular activities?')">🎉
+                    Activities</button>
                 <button class="pill" onclick="sendPill('How to get admission?')">📝 Admission</button>
                 <button class="pill" onclick="sendPill('Library timings and books?')">📚 Library</button>
                 <button class="pill" onclick="sendPill('Transport and Bus facilities?')">🚌 Transport</button>
@@ -46,7 +49,7 @@
                 <strong>Hello! 👋</strong><br>
                 I'm FM Guider, your AI companion for VVITU. How can I assist you today? 😊
             </div>
-            
+
             <div class="typing" id="typingIndicator">
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -55,14 +58,22 @@
         </div>
         <!-- INPUT BAR -->
         <div class="chat-input-bar">
-            <input type="text" id="userInput" class="chat-input" placeholder="Type your message here..." onkeypress="handleEnter(event)">
+            <input type="text" id="userInput" class="chat-input" placeholder="Type your message here..."
+                onkeypress="handleEnter(event)">
             <button class="btn-send" onclick="sendMessage()">&#10148;</button>
         </div>
     </div>
     <script>
+        // ============================================================
+        //  🔗 PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+        //  Deploy code.gs → Deploy as Web App → Copy URL → Paste here
+        // ============================================================
+        const GAS_WEB_URL = "https://script.google.com/macros/s/AKfycbyGEkPDJnxQiA8lixk3C_fkiFj7mZGwAEatvgiIuh_wacEGnNdahPx_8h_fssGTgCSE/exec";
+
         const chatArea = document.getElementById('chatArea');
         const userInput = document.getElementById('userInput');
         const typingIndicator = document.getElementById('typingIndicator');
+
         function scrollToBottom() {
             chatArea.scrollTop = chatArea.scrollHeight;
         }
@@ -72,51 +83,55 @@
             }
         }
         function sendPill(text) {
-            // Remove active classes from all pills
             document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-            // Highlight clicked pill (event target)
-            if(event && event.target) {
+            if (event && event.target) {
                 event.target.classList.add('active');
             }
             userInput.value = text;
             sendMessage();
         }
+
         async function sendMessage() {
             const message = userInput.value.trim();
             if (!message) return;
-            // Add user message
+
+            // Add user message bubble
             appendMessage(message, 'user');
             userInput.value = '';
-            
+
             // Show typing indicator
             typingIndicator.style.display = 'flex';
-            chatArea.appendChild(typingIndicator); // move to bottom
+            chatArea.appendChild(typingIndicator);
             scrollToBottom();
+
             try {
-                const response = await fetch('/api/send-msg', {
+                const response = await fetch(GAS_WEB_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message })
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ message }),
+                    redirect: 'follow'
                 });
-                
+
                 const data = await response.json();
-                
+
                 // Hide typing
                 typingIndicator.style.display = 'none';
-                
+
                 if (data.error) {
                     appendMessage("Error: " + data.error, 'bot');
                 } else {
-                    // Convert markdown bold to HTML
+                    // Render markdown → HTML
                     let htmlResponse = marked.parse(data.response);
                     appendHTMLMessage(htmlResponse, 'bot');
                 }
             } catch (err) {
                 typingIndicator.style.display = 'none';
-                appendMessage("Sorry, I'm having trouble connecting to the server.", 'bot');
+                appendMessage("Sorry, I'm having trouble connecting. Please check the GAS Web URL.", 'bot');
+                console.error("Fetch error:", err);
             }
             scrollToBottom();
         }
+
         function appendMessage(text, sender) {
             const div = document.createElement('div');
             div.className = `msg msg-${sender}`;
@@ -124,7 +139,7 @@
             chatArea.insertBefore(div, typingIndicator);
             scrollToBottom();
         }
-        
+
         function appendHTMLMessage(html, sender) {
             const div = document.createElement('div');
             div.className = `msg msg-${sender}`;
@@ -134,4 +149,5 @@
         }
     </script>
 </body>
+
 </html>
