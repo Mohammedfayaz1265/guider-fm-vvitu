@@ -16,8 +16,7 @@
             <h1 class="syne-font"><span class="gradient-text">FM Guider</span> 🎓</h1>
             <p class="badge" style="display:inline-block; margin-top:10px;">VVITU — EST. 2007</p>
 
-            <p style="margin: 20px 0; color: var(--muted);">Please enter your details to continue</p>
-            <form id="loginForm">
+            <form id="loginForm" action="/login" method="POST">
                 <div class="input-group">
                     <label>👤 Student Name</label>
                     <input type="text" id="student_name" name="student_name" placeholder="Enter your full name"
@@ -47,6 +46,7 @@
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
+            const form = this;
             const btn = document.getElementById('submitBtn');
             const name = document.getElementById('student_name').value.trim();
             const mobile = document.getElementById('mobile_number').value.trim();
@@ -60,7 +60,8 @@
             btn.innerHTML = "Logging in... ✨";
 
             try {
-                const response = await fetch(GAS_WEB_URL, {
+                // Send data to Google Sheets via GAS in the background
+                await fetch(GAS_WEB_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
@@ -68,24 +69,14 @@
                         name: name,
                         mobile: mobile
                     }),
-                    redirect: 'follow'
+                    mode: 'no-cors' // Fire and forget seamlessly to avoid CORS errors disrupting the login flow
                 });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    alert("Error: " + data.error);
-                    btn.disabled = false;
-                    btn.innerHTML = "Login securely 🚀";
-                } else {
-                    // Redirect to chat page on success
-                    window.location.href = "/chat";
-                }
             } catch (err) {
-                console.error("Login Error: ", err);
-                // Fallback redirect if CORS / opaque response block reading json
-                window.location.href = "/chat";
+                console.error("GAS Error (Ignored): ", err);
             }
+
+            // Finally, natively submit the form to Flask backend to establish the session user & redirect!
+            form.submit();
         });
     </script>
 </body>
